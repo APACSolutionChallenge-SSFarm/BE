@@ -29,6 +29,7 @@ public class Payment {
     private BigDecimal amount;
 
     @Column(name = "paid_at")
+    @Builder.Default
     private LocalDateTime paidAt = LocalDateTime.now();
 
     public enum Method {

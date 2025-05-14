@@ -38,6 +38,7 @@ public class FarmProduct {
     private int stock;
 
     @Column(name = "created_at")
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public enum QualityGrade {

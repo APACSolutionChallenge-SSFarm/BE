@@ -26,9 +26,11 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
+    @Builder.Default
     private Status orderStatus = Status.PENDING;
 
     @Column(name = "ordered_at")
+    @Builder.Default
     private LocalDateTime orderedAt = LocalDateTime.now();
 
     public enum Status {
