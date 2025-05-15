@@ -59,7 +59,7 @@ public class ImageUploadService {
     }
 
     private void sendToAiServer(Path filePath, String fileName) {
-        String aiEndpoint = "http://localhost:5000/analyze"; // AI 서버 주소
+        String aiEndpoint = "http://localhost:5000/predict"; // AI 서버 주소
 
         try {
             HttpHeaders headers = new HttpHeaders();
