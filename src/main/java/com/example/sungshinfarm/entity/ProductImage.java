@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+/*@Entity
 @Table(name = "product_images")
 @Getter @Setter
 @NoArgsConstructor
@@ -30,3 +30,4 @@ public class ProductImage {
     private LocalDateTime uploadedAt = LocalDateTime.now();
 }
 
+*/
