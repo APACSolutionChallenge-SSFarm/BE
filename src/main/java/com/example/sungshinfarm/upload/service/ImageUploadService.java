@@ -40,7 +40,6 @@ public class ImageUploadService {
 
             String imageUrl = "/uploads/" + fileName;
 
-            // 1. DB에 저장
             productImageRepository.save(ProductImage.builder()
                     .imageUrl(imageUrl)
                     .detectedQuality("UNKNOWN")
@@ -48,7 +47,6 @@ public class ImageUploadService {
                     .uploadedAt(LocalDateTime.now())
                     .build());
 
-            // 2. AI 서버에 이미지 파일 자체 전송
             sendToAiServer(filePath, fileName);
 
             return imageUrl;
@@ -80,70 +78,7 @@ public class ImageUploadService {
     }
 
     public UploadResultDto sendImageToAiAndReturnResult(MultipartFile image) {
-        String imageUrl = storeImage(image); // 저장 + AI 전송
+        String imageUrl = storeImage(image);
         return new UploadResultDto(imageUrl);
     }
 }
-
-/*@Service
-@RequiredArgsConstructor
-public class ImageUploadService {
-
-    private final ProductImageRepository productImageRepository;
-
-    @Value("${file.upload-dir}")
-    private String uploadDir;
-
-    public String storeImage(MultipartFile file) {
-        try {
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            String imageUrl = "/uploads/" + fileName;
-
-            // 1. DB에 저장
-            ProductImage saved = productImageRepository.save(ProductImage.builder()
-                    .imageUrl(imageUrl)
-                    .detectedQuality("UNKNOWN") // AI 결과 기다림
-                    .confidence(0.0f)
-                    .uploadedAt(LocalDateTime.now())
-                    .build());
-
-            // 2. AI 서버에 이미지 URL 전달
-            sendToAiServer(imageUrl);
-
-            return imageUrl;
-
-        } catch (IOException e) {
-            throw new RuntimeException("이미지 저장 실패", e);
-        }
-    }
-
-    private void sendToAiServer(String imageUrl) {
-        String aiEndpoint = "http://localhost:5000/analyze"; // AI 서버 주소
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        Map<String, String> body = new HashMap<>();
-        body.put("imageUrl", imageUrl);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(aiEndpoint, request, String.class);
-            System.out.println("AI 응답: " + response.getBody());
-        } catch (Exception e) {
-            System.err.println("AI 전송 실패: " + e.getMessage());
-        }
-    }
-}
-*/
