@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/register")
 @RequiredArgsConstructor
@@ -19,8 +21,8 @@ public class RegisterController {
 
     // 등록폼 진입 (품목명, 품질등급을 받아서 등록폼 초기 데이터 제공)
     @GetMapping("/register-form")
-    public ResponseEntity<AiResultDto> showRegisterForm(@RequestParam String name, @RequestParam String qualityGrade) {
-        AiResultDto dto = new AiResultDto(name, qualityGrade);
+    public ResponseEntity<AiResultDto> showRegisterForm(@RequestParam String name, @RequestParam String qualityGrade, @RequestParam BigDecimal recommendedPrice) {
+        AiResultDto dto = new AiResultDto(name, qualityGrade, recommendedPrice);
         return ResponseEntity.ok(dto);
     }
 
